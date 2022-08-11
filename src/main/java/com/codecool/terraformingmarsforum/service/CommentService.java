@@ -8,6 +8,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CommentService {
 
-    private CommentDAO commentDAO;
+    final private CommentDAO commentDAO;
 
 }
