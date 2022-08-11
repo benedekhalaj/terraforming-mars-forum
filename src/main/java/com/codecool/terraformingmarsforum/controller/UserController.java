@@ -21,7 +21,7 @@ public class UserController {
     private final UserService userService;
 
     @PostMapping("/")
-    public ResponseEntity<?> createUser(@RequestBody User user) {
+    public ResponseEntity<User> createUser(@RequestBody User user) {
         int id = userService.createUser(user);
         return ResponseEntity.created(URI.create(String.format("api/comments/%d", id))).body(user);
     }
