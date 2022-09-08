@@ -3,12 +3,14 @@ package com.codecool.terraformingmarsforum.model;
 import io.vavr.control.Either;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 /**
  * In this class we can validate any user related data
  */
 @NoArgsConstructor
 @Data
+@Component
 public class DataValidation {
 
     /**
@@ -16,7 +18,6 @@ public class DataValidation {
      * If you need this method, you can use with built-in isLeft() and isRight() methods:
      * e.g.:
      * dataValidation.checkValidUsername(username).isLeft() == false
-     *
      * dataValidation.checkValidUsername(username).isRight() == true
      *
      * @param username which the user tries to log in (e.g)
