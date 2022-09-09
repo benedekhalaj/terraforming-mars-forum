@@ -42,10 +42,8 @@ export class UserPostContainerComponent implements OnInit {
   }
 
   getUser(): void {
-    this.userService.getUsers().subscribe(users => {
-      if (users.length) {
-        this.user = users[0];
-      }
+    this.userService.getUserById(1).subscribe(user => {
+        this.user = user;
     });
   }
 

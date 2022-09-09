@@ -9,7 +9,7 @@ import {UserPost} from "../../interfaces/user-post";
   providedIn: 'root'
 })
 export class UserPostService {
-  private userPostsUrl: string = "api/userPosts";
+  private userPostsUrl: string = "api/user-posts";
   private httpOptions: {} = {
     headers: new HttpHeaders({'Content-Type': 'application/json'})
   };
@@ -42,9 +42,10 @@ export class UserPostService {
   }
 
   addUserPost(userPost: UserPost): Observable<UserPost> {
+    const body = {description: userPost.description, userId: userPost.user.id}
     // Generate ID
-    userPost.id = ++this.generateId;
-    return this.http.post<UserPost>(this.userPostsUrl, userPost, this.httpOptions)
+    // userPost.id = ++this.generateId;
+    return this.http.post<UserPost>(this.userPostsUrl, body, this.httpOptions)
       .pipe(
         tap((_) => this.log(`create user post with id=${userPost.id} (TAP)`)),
         catchError(this.errorHandler.handleError<UserPost>('addUserPost'))
