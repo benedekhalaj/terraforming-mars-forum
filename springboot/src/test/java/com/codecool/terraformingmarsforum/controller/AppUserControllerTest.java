@@ -1,5 +1,6 @@
 package com.codecool.terraformingmarsforum.controller;
 
+import com.codecool.terraformingmarsforum.model.DataValidation;
 import com.codecool.terraformingmarsforum.service.AppUserService;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,11 +16,14 @@ class AppUserControllerTest {
 
     @Mock
     private AppUserService appUserService;
+    @Mock
+    private DataValidation dataValidation;
     private AppUserController appUserController;
 
     @BeforeEach
     public void init(){
-        appUserController = new AppUserController(appUserService);
+        //TODO move datavalidation to AppUserServiceController
+        appUserController = new AppUserController(appUserService, dataValidation);
     }
 
     @Test

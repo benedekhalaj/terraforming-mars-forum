@@ -2,6 +2,7 @@ package com.codecool.terraformingmarsforum.controller;
 
 
 import com.codecool.terraformingmarsforum.model.AppUser;
+import com.codecool.terraformingmarsforum.model.DataValidation;
 import com.codecool.terraformingmarsforum.service.AppUserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -23,6 +24,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AppUserController {
 
     private final AppUserService appUserService;
+    private final DataValidation dataValidation;
 
     @GetMapping("/{id}")
     public ResponseEntity<AppUser> getUserById(@PathVariable Long id){
@@ -32,8 +34,13 @@ public class AppUserController {
 
     @GetMapping("/login/{userData}")
     public ResponseEntity<AppUser> getUserByUsernameOrEmail(@PathVariable String userData){
-        AppUser appUser = appUserService.getAppUserByUsernameOrEmail(userData, userData);
-        return ResponseEntity.ok(appUser);
+        //TODO move validation to service layer ?? not sure
+        if (dataValidation.checkValidUsername(userData).isRight()){
+            AppUser appUser = appUserService.getAppUserByUsernameOrEmail(userData, userData);
+            return ResponseEntity.ok(appUser);
+        }
+        //TODO throwing illegal argument exception
+        return ResponseEntity.notFound().build();
     }
 
 }
