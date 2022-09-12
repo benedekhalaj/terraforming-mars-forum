@@ -1,6 +1,7 @@
 package com.codecool.terraformingmarsforum.model;
 
 import io.vavr.control.Either;
+import io.vavr.control.Validation;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -23,11 +24,16 @@ public class DataValidation {
      * @param username which the user tries to log in (e.g)
      * @return Either.left as a failure or Either.right as a success depends on the criteria below
      */
-    public Either<String, String>  checkValidUsername(String username){
+    public Either<Class<IllegalArgumentException>, String> checkValidUsername(String username){
         if (username.length() < 1 || username.length() > 32){
-            return Either.left("Username not valid!");
+            return Either.left(IllegalArgumentException.class);
         } else {
             return Either.right(username);
         }
+    }
+
+    //TODO email validation with built-in Validation?
+    public Validation<String, String> checkValidEmail(String email){
+        return Validation.valid(email);
     }
 }
