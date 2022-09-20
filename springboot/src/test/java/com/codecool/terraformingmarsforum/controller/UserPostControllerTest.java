@@ -8,6 +8,7 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 
@@ -50,9 +51,13 @@ class UserPostControllerTest {
 
     @Test
     public void getAllUserPosts_HasAllUserPostsInRequestBody() {
-        List<UserPost> expected = getUserPosts();
-        when(userPostService.getAllUserPosts()).thenReturn(expected);
-        List<UserPost> actual = userPostController.getAllUserPosts().getBody();
+        List<UserPost> userPosts = getUserPosts();
+
+        when(userPostService.getAllUserPosts()).thenReturn(userPosts);
+
+        CollectionModel<UserPost> expected = CollectionModel.of(userPosts);
+        CollectionModel<UserPost> actual = userPostController.getAllUserPosts().getBody();
+
         assertEquals(expected, actual);
     }
 

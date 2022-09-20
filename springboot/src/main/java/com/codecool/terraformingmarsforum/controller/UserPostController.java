@@ -9,6 +9,7 @@ import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 
+import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -55,8 +56,17 @@ public class UserPostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<UserPost>> getAllUserPosts() {
-        return ResponseEntity.ok(userPostService.getAllUserPosts());
+    public ResponseEntity<CollectionModel<UserPost>> getAllUserPosts() {
+        List<UserPost> userPosts = userPostService.getAllUserPosts();
+
+        userPosts.forEach(userPost -> {
+            Link selfLink = linkTo(methodOn(UserPostController.class).getUserPostById(userPost.getId())).withSelfRel();
+            userPost.add(selfLink);
+        });
+        Link selfLink = linkTo(methodOn(UserPostController.class).getAllUserPosts()).withSelfRel();
+        CollectionModel<UserPost> userPostCollectionModel = CollectionModel.of(userPosts, selfLink);
+
+        return ResponseEntity.ok(userPostCollectionModel);
     }
 
     @PostMapping
@@ -85,8 +95,11 @@ public class UserPostController {
     @GetMapping("/{id}")
     public ResponseEntity<UserPost> getUserPostById(@PathVariable Long id) {
         UserPost userPost = userPostService.getUserPostById(id);
-        Link selfLink = linkTo(UserPostController.class).slash(id).withSelfRel();
-        userPost.add(selfLink);
+
+        Link selfLink = linkTo(methodOn(UserPostController.class).getUserPostById(id)).withSelfRel();
+        Link userPostsLink = linkTo(methodOn(UserPostController.class).getAllUserPosts()).withRel("all");
+        userPost.add(selfLink).add(userPostsLink);
+
         return ResponseEntity.ok(userPost);
     }
 }
