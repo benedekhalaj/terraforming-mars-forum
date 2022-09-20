@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
+import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -81,6 +82,8 @@ public class UserPostController {
 
     @GetMapping("/{id}")
     public ResponseEntity<UserPost> getUserPostById(@PathVariable Long id) {
-        return ResponseEntity.ok(userPostService.getUserPostById(id));
+        UserPost userPost = userPostService.getUserPostById(id);
+        userPost.add(linkTo(UserPostController.class).slash(id).withSelfRel());
+        return ResponseEntity.ok(userPost);
     }
 }

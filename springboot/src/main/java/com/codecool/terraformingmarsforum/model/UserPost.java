@@ -3,6 +3,7 @@ package com.codecool.terraformingmarsforum.model;
 
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.springframework.hateoas.RepresentationModel;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -20,7 +21,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-public class UserPost implements Post {
+public class UserPost extends RepresentationModel<UserPost> implements Post {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
