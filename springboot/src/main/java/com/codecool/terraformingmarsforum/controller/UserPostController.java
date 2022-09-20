@@ -8,6 +8,8 @@ import lombok.Data;
 import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.*;
+
+import org.springframework.hateoas.Link;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -83,7 +85,8 @@ public class UserPostController {
     @GetMapping("/{id}")
     public ResponseEntity<UserPost> getUserPostById(@PathVariable Long id) {
         UserPost userPost = userPostService.getUserPostById(id);
-        userPost.add(linkTo(UserPostController.class).slash(id).withSelfRel());
+        Link selfLink = linkTo(UserPostController.class).slash(id).withSelfRel();
+        userPost.add(selfLink);
         return ResponseEntity.ok(userPost);
     }
 }
